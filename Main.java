@@ -147,6 +147,7 @@ class Main implements ActionListener, KeyListener {
             S.text(str);
         }
     }
+    //
 
     @Override
     public void keyPressed(KeyEvent e) // check when esc and enter is pressed and do work accordingly
