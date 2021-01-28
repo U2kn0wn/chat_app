@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.awt.Color;
@@ -25,21 +26,26 @@ class Main implements ActionListener, KeyListener {
     JLabel texcom = null; // this contain both send button and chatti JTextField
     // private Boolean command = false;
     JScrollPane scroll;
+    Thread t1=null;
+    // Thread t2=null;
     Server S=null;
     // Client C=null;
 
-    public static void main(String[] args) throws FileNotFoundException // main function
+    public static void main(String[] args) throws IOException
     {
 
         Main object = new Main();
         object.Frontend();
-        while(true)
-        {
-            if(data.refresh)
-            {
-                object.screen(data.filename);
-            }
-        }
+        File er=new File("./chat/error");
+        er.createNewFile();
+        data.error=new FileWriter("./chat/error");
+        // while(true)
+        // {
+        //     if(data.refresh)
+        //     {
+        //         object.screen(data.filename);
+        //     }
+        // }
 
     }
 
@@ -138,7 +144,7 @@ class Main implements ActionListener, KeyListener {
         }
 
         else {
-            chatdisplay.append(str + "\n");
+            S.text(str);
         }
     }
 
@@ -179,18 +185,20 @@ class Main implements ActionListener, KeyListener {
             if(str.substring(7,12).equalsIgnoreCase("start"))
             {
                 S=new Server();
+                t1=new Thread(S);
+                t1.start();
                 
             }
 
-            else{
+            else if(str.substring(7,11).equalsIgnoreCase("stop")){
                 S.exit();
             }
         }
 
-        if(str.substring(0,4)=="Chat")
+        if(str.substring(0,4).equalsIgnoreCase("chat"))
         {
-            String connectionnumber=data.connection.get(str.charAt(5));
-            if(connectionnumber.substring(2,8)=="Server")
+            String connectionnumber=data.connection.get((int)str.charAt(5));
+            if(connectionnumber.substring(2,8).equalsIgnoreCase("server"))
             {
                 S.start((int)connectionnumber.charAt(0));
             }

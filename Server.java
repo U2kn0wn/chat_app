@@ -4,44 +4,68 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
-public class Server {
+public class Server implements Runnable{
     ServerSocket ss=null;
     Socket s=null;
     Vector<soc> soo=new Vector<>();
+    private Boolean stop=true;
+    private int currentfile;
 
     //filename=index of vector+1; 
 
-    public Server() throws IOException, InterruptedException
-    {
-        ss=new ServerSocket(1234);
-        s=ss.accept();
-        soc so=new soc();
-        soo.add(so);
-        data.connection.add(soo.size()+" Server");  //this will add list of server as well as client
-        String filename=""+data.connection.size();
-        so.start(s, filename);
-        File file=new File("./chat/"+filename);
-        if(!file.createNewFile())
+    @Override
+    public void run() {
+        try{
+            ss=new ServerSocket(1234);
+            
+            
+        do
         {
-            file.delete();
-            file.createNewFile();
+            s=ss.accept();
+            soc so=new soc();
+            soo.add(so);
+            data.connection.add(soo.size()+" Server");  //this will add list of server as well as client
+            String filename=""+data.connection.size();
+            so.start(s, filename);
+            File file=new File("./chat/"+filename);
+            if(!file.createNewFile())
+            {
+                file.delete();
+                file.createNewFile();
+            }
+        
+        }while(stop);
         }
-        
 
-        
+        catch(Exception e)
+        {
+            try {
+                data.error.write("" + e);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     public void start(int a)
     {
         soo.get(a).resume();
+        currentfile=a;
     }
 
     public void exit() throws IOException
     {
-        ss.close();
-        s.close();
+        // stop=false;
+        // ss.close();
+        // s.close();
+        System.out.println("ok");
 
        
+    }
+
+    public void text(String a)
+    {
+        soo.get(currentfile).text(a);
     }
 }
 
@@ -50,11 +74,12 @@ class soc
 {
     Thread t1=null;
     Thread t2=null;
+    output o=null;
     public void start(Socket s,String filename) throws IOException, InterruptedException
     {
         
 
-        output o=new output(s,filename);
+        o=new output(s,filename);
         input i=new input(s, filename);
         t1=new Thread(o);
         t2=new Thread(i);
@@ -71,5 +96,10 @@ class soc
     public void resume()
     {
         t1.notify();
+    }
+
+    public void text(String a)
+    {
+        o.Text(a);
     }
 }

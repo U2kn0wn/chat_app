@@ -35,6 +35,7 @@ public class input implements Runnable {
                 {
                     file.write("Server: "+str);
                     data.refresh=true;
+                    System.out.println(str);
                 }
                 else{
                     exit();

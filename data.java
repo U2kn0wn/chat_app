@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.util.Vector;
 
 public class data {
@@ -7,4 +8,5 @@ public class data {
     public static Boolean refresh=false;
     public static String filename="";
     public static Boolean command=false;
+    public static FileWriter error=null;
 }
