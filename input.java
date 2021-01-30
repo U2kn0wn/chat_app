@@ -8,7 +8,7 @@ public class input implements Runnable {
     private Socket s = null;
     private Boolean connection = true;
     private String filename = null;
-    FileWriter file = null;
+    private FileWriter file = null;
 
     public input(Socket s, String a) throws IOException
     {
@@ -26,6 +26,7 @@ public class input implements Runnable {
     public void run() {
         try
         {
+            file.write("input Started\n");
             InputStreamReader in=new InputStreamReader(s.getInputStream());
             BufferedReader bf=new BufferedReader(in);
             while(connection)
@@ -33,7 +34,7 @@ public class input implements Runnable {
                 String str=bf.readLine();
                 if(str!=null)
                 {
-                    file.write("Server: "+str);
+                    file.write(str+"\n");
                     data.refresh=true;
                     System.out.println(str);
                 }

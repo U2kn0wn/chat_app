@@ -2,7 +2,7 @@ import java.io.FileWriter;
 import java.util.Vector;
 
 public class data {
-    public static String name=null;
+    public static String name="mohit";
     public static int length;
     public static Vector<String> connection=new Vector<>();
     public static Boolean refresh=false;

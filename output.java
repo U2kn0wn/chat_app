@@ -35,24 +35,23 @@ public class output implements Runnable {
     public void run() {
         try
         {
+            fw.write("output Started\n");
             // Scanner sc=new Scanner(System.in);
             PrintWriter pr=new PrintWriter(s.getOutputStream());
             while(condition)
             {
                 // String sstt=sc.nextLine();
-                String sstt=text;
-                text=null;
-                if(sstt!=null)
+                if(text!=null)
                 {
-                    fw.write(sstt);
-                    pr.println(sstt);
-                    pr.flush();
-                    data.refresh=true;
-                }
-
-                else
-                {
-                    exit();
+                    String sstt=text;
+                    text=null;
+                    if(sstt!=null)
+                    {
+                        fw.write(data.name+": "+sstt);
+                        pr.println(data.name+": "+sstt);
+                        pr.flush();
+                        data.refresh=true;
+                    }
                 }
             }
         }

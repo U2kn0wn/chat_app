@@ -39,6 +39,10 @@ class Main implements ActionListener, KeyListener {
         File er=new File("./chat/error");
         er.createNewFile();
         data.error=new FileWriter("./chat/error");
+        if(data.refresh)
+        {
+            object.screen(data.filename);
+        }
         // while(true)
         // {
         //     if(data.refresh)
@@ -188,6 +192,7 @@ class Main implements ActionListener, KeyListener {
                 S=new Server();
                 t1=new Thread(S);
                 t1.start();
+                chatdisplay.setText("server start");
                 
             }
 
@@ -198,10 +203,19 @@ class Main implements ActionListener, KeyListener {
 
         if(str.substring(0,4).equalsIgnoreCase("chat"))
         {
-            String connectionnumber=data.connection.get((int)str.charAt(5));
+            // System.out.println("haaai: "+str.charAt(5));
+            
+            int aa=Integer.parseInt(String.valueOf(str.charAt(5)));
+            // System.out.println("haaai: "+aa);
+            // System.out.println(""+data.connection.get(aa));
+            // System.out.println("haaai: "+str.charAt(5));
+            String connectionnumber=data.connection.get(aa);
+            
             if(connectionnumber.substring(2,8).equalsIgnoreCase("server"))
             {
-                S.start((int)connectionnumber.charAt(0));
+                System.out.println("haaai");
+                S.start(Integer.parseInt(String.valueOf(connectionnumber.charAt(0))));
+                
             }
         }
     }
@@ -215,6 +229,8 @@ class Main implements ActionListener, KeyListener {
         {
             String dda=sc.nextLine();
             chatdisplay.append(dda);
+            data.refresh=false;
+            conlist.append(""+data.connection.size());
         }
         sc.close();
     }

@@ -7,7 +7,7 @@ import java.util.Vector;
 public class Server implements Runnable{
     ServerSocket ss=null;
     Socket s=null;
-    Vector<soc> soo=new Vector<>();
+    Vector<soc> soo=new Vector<>(0);
     private Boolean stop=true;
     private int currentfile;
 
@@ -16,7 +16,7 @@ public class Server implements Runnable{
     @Override
     public void run() {
         try{
-            ss=new ServerSocket(1234);
+            ss=new ServerSocket(49152);
             
             
         do
@@ -24,7 +24,7 @@ public class Server implements Runnable{
             s=ss.accept();
             soc so=new soc();
             soo.add(so);
-            data.connection.add(soo.size()+" Server");  //this will add list of server as well as client
+            data.connection.add(soo.size()+" Server ");  //this will add list of server as well as client
             String filename=""+data.connection.size();
             so.start(s, filename);
             File file=new File("./chat/"+filename);
@@ -49,8 +49,9 @@ public class Server implements Runnable{
 
     public void start(int a)
     {
-        soo.get(a).resume();
+        soo.get(a-1).resume();
         currentfile=a;
+
     }
 
     public void exit() throws IOException
@@ -75,12 +76,13 @@ class soc
     Thread t1=null;
     Thread t2=null;
     output o=null;
+    input i=null;
     public void start(Socket s,String filename) throws IOException, InterruptedException
     {
         
 
         o=new output(s,filename);
-        input i=new input(s, filename);
+        i=new input(s, filename);
         t1=new Thread(o);
         t2=new Thread(i);
         t1.start();
