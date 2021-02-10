@@ -29,7 +29,7 @@ class Main implements ActionListener, KeyListener {
     Thread t1=null;
     // Thread t2=null;
     Server S=null;
-    // Client C=null;
+    Client C=null;
 
     public static void main(String[] args) throws IOException
     {
@@ -39,17 +39,17 @@ class Main implements ActionListener, KeyListener {
         File er=new File("./chat/error");
         er.createNewFile();
         data.error=new FileWriter("./chat/error");
-        if(data.refresh)
-        {
-            object.screen(data.filename);
-        }
-        // while(true)
+        // if(data.refresh)
         // {
-        //     if(data.refresh)
-        //     {
-        //         object.screen(data.filename);
-        //     }
+        //     object.screen(data.filename);
         // }
+        while(true)
+        {
+            if(data.refresh)
+            {
+                object.screen(data.filename);
+            }
+        }
 
     }
 
@@ -201,27 +201,35 @@ class Main implements ActionListener, KeyListener {
             }
         }
 
+        else if(str.substring(0,7).equalsIgnoreCase("client"))
+        {
+            //todo command: client 127.0.0.1
+        }
+
         if(str.substring(0,4).equalsIgnoreCase("chat"))
         {
-            // System.out.println("haaai: "+str.charAt(5));
             
             int aa=Integer.parseInt(String.valueOf(str.charAt(5)));
-            // System.out.println("haaai: "+aa);
-            // System.out.println(""+data.connection.get(aa));
-            // System.out.println("haaai: "+str.charAt(5));
             String connectionnumber=data.connection.get(aa);
             
             if(connectionnumber.substring(2,8).equalsIgnoreCase("server"))
             {
                 System.out.println("haaai");
                 S.start(Integer.parseInt(String.valueOf(connectionnumber.charAt(0))));
-                
+                System.out.println("haaai");
+            }
+
+            else if(connectionnumber.substring(2,8).equalsIgnoreCase("client"))
+            {
+                //todo c.start(Integer.parseInt(String.valueOf(connectionnumber.charAt(0))));
+
             }
         }
     }
 
     public void screen(String a) throws FileNotFoundException
     {
+        conlist.append(""+data.connection.size()+"\n");
         File file=new File("./chat/"+a);
         Scanner sc=new Scanner(file);
         chatdisplay.setText("");
@@ -230,7 +238,7 @@ class Main implements ActionListener, KeyListener {
             String dda=sc.nextLine();
             chatdisplay.append(dda);
             data.refresh=false;
-            conlist.append(""+data.connection.size());
+            
         }
         sc.close();
     }

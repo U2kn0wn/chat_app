@@ -26,6 +26,7 @@ public class Server implements Runnable{
             soo.add(so);
             data.connection.add(soo.size()+" Server ");  //this will add list of server as well as client
             String filename=""+data.connection.size();
+            data.refresh=true;
             so.start(s, filename);
             File file=new File("./chat/"+filename);
             if(!file.createNewFile())
